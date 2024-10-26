@@ -2,16 +2,23 @@ package personal_expense_manager._Category;
 
 import java.io.Serializable;
 
+//This is a domain class representing a category
+// It also implements the Serializable interface, making instances serializable
+//
 public class Category implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-		private Long categoryId = System.currentTimeMillis();
+//It refers to a unique category Id. Simply generated using current time
+//In a real time application it should be generated using some professional strategy or algo
+		private String categoryId; //= System.currentTimeMillis();
+		
+//Name of Expense category		
 		private String name;
 		
 		public Category(String name) {
 			this.name = name;
 		}
-		public Category(Long categoryId, String name) {
+		public Category(String categoryId, String name) {
 			this.categoryId = categoryId;
 			this.name = name;
 		}
@@ -20,11 +27,11 @@ public class Category implements Serializable{
 			
 		}
 		
-		public Long getCategoryId() {
+		public String getCategoryId() {
 			return categoryId;
 		}
 		
-		public void setCategoryId(Long categoryId) {
+		public void setCategoryId(String categoryId) {
 			this.categoryId = categoryId;
 		}
 		

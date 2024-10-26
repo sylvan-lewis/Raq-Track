@@ -7,19 +7,20 @@ public class Expense implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long expenseId = System.currentTimeMillis();
-	private Long categoryId; 
+	private String categoryId; 
 	private Float amount;
 	private Date date;
 	private String remark;
-	//private String name;
+	
+	//This is a domain class represents Expense
 	
 	public Expense() {
 		
 	}
 	
+	// 
 	
-	
-	public Expense(Long categoryId, Float amount, Date date, String remark) {
+	public Expense(String categoryId, Float amount, Date date, String remark) {
 		this.categoryId = categoryId;
 		this.amount = amount;
 		this.date = date;
@@ -30,9 +31,9 @@ public class Expense implements Serializable{
 	
 	public void setExpenseId(Long expenseId) {this.expenseId= expenseId;}
 	
-	public Long getCategoryId() {return categoryId;}
+	public String getCategoryId() {return categoryId;}
 
-	public void setCategoryId(Long categoryId) {this.categoryId = categoryId;}
+	public void setCategoryId(String categoryId) {this.categoryId = categoryId;}
 
 	public Float getAmount() {return amount;}
 

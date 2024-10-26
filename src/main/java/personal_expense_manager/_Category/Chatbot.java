@@ -6,19 +6,41 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+//This class contains most of the operations related to my application.
+//This class prepares a menu and various methods are present to handle the user action.
+//The class makes use of the 'Repository.java' to store the data. 
+//Also its using 'ReportService.java' to generate different required reports.
+
 public class Chatbot {
 
+//Declare a reference of repository by calling a static method which returns a singleton repository object.
+	
     private Repository repo = Repository.getRepository();
+   
+//Declare a reference of reportService by calling a different method to calculate reports
+    
     private ReportService reportService = new ReportService();
+   
+ //Declare a reference of fileService by calling a different method to buffer written user input to .txt's   
+ 
     private FileService fileService = new FileService(); // Use the new FileService class
 
+ // Declare a Scanner object to take input standard input from keyboard.   
+    
     private Scanner s = new Scanner(System.in);
+    
+ // This variable store the menu-choice   
+   
     private int choice;
 
+ // Call this constructor to create our Chatbot object with default details.   
+  
     public Chatbot() {
         restoreRepository();  // Restore data from text files when the chatbot starts
     }
 
+//This method prepares the application menu using a switch-case and infinite loop, inquiring for user choice
+   
     public void showMenu() {
         while (true) {
             try {
@@ -56,16 +78,21 @@ public class Chatbot {
                         onExit();
                         break;
                     default:
-                        System.out.println("Invalid option. Please enter a valid option (0-7).");
+               //Calling Default if a user inputs wrong digit
+                     
+                    	System.out.println("Invalid option. Please enter a valid option (0-7).");
                         break;
                 }
+         //This catch with prompt the print statements contents whenever a user inputs Invalid prompts
+        
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please try again.");
-                s.next();  // Clear invalid input
+                s.next();
             }
         }
     }
-
+// This method prints a menu, which will show up in the console each input
+   
     public void printMenu() {
         System.out.println("----- Welcome to YourExpense! -----");
         System.out.println("1. Add Category");
@@ -80,7 +107,9 @@ public class Chatbot {
         System.out.print("Enter your choice: ");
         choice = s.nextInt();
     }
-
+// This method is called to hold a output screen after processing the requested task.
+// and wait for any char input to continue to the menu
+  
     public void pressAnyKeyToContinue() {
         System.out.println("Press 'Enter' to continue...");
         try {
@@ -90,7 +119,8 @@ public class Chatbot {
         }
     }
 
-    // Method to add a category
+    // This method to taking expense category name as input to add caategory in the system
+   
     public void onAddCategory() {
         s.nextLine();  // Consume newline
         System.out.print("Enter Category Name: ");
@@ -103,7 +133,8 @@ public class Chatbot {
         fileService.writeToFile("categories.txt", repo.catList);
     }
 
-    // Method to list all categories
+    // Call this method to print existing category list.
+   
     public void onCategoryList() {
         System.out.println("Category List");
         for (int i = 0; i < repo.catList.size(); i++) {
@@ -112,7 +143,8 @@ public class Chatbot {
         }
     }
 
-    // Method to add an expense entry
+    // Call this method to enter expense detail. The entered details will be added in repository.
+  
     public void onExpenseEntry() {
         System.out.println("Enter Details for Expense Entry...");
         onCategoryList();  // Display the categories to choose from
@@ -143,7 +175,8 @@ public class Chatbot {
         fileService.writeToFile("expenses.txt", repo.expList);
     }
 
-    // Method to list all expenses
+    // Call this method prints all entered expenses.
+   
     private void onExpenseList() {
         System.out.println("Expense Listing...");
         for (Expense exp : repo.expList) {
@@ -152,7 +185,11 @@ public class Chatbot {
             System.out.println(catName + ", " + exp.getAmount() + ", " + exp.getRemark() + ", " + dateString);
         }
     }
-
+// This method is called from menu to prepare monthly-wise-expense-total.
+// Using ReportService.java to calculate report. 
+// The returned result is printed by this method.
+// Means this method invokes a call to generate report then result is printed by this method
+   
     private void onMonthlyExpenseList() {
         System.out.println("Monthly Expense Total...");
         Map<String, Float> resultMap = reportService.calculateMonthlyTotal();
@@ -160,7 +197,11 @@ public class Chatbot {
             System.out.println(yearMonth + " : " + resultMap.get(yearMonth));
         }
     }
-
+//This method is called from menu to prepare yearly-wise-expense-total.
+// Using ReportService.java to calculate report. 
+// The returned result is printed by this method.
+// Means this method invokes a call to generate report then result is printed by this method     
+  
     private void onYearlyExpenseList() {
         System.out.println("Yearly Expense Total...");
         Map<Integer, Float> resultMap = reportService.calculateYearlyTotal();
@@ -172,7 +213,10 @@ public class Chatbot {
         }
         System.out.println("Total Expenses: " + total);
     }
-
+  //This method is called from menu to prepare category-wise-expense-total.
+ // Using ReportService.java to calculate report. 
+ // The returned result is printed by this method.
+ // Means this method invokes a call to generate report then result is printed by this method     
     private void onCategorizedExpenseList() {
         System.out.println("Category-wise Expense Listing...");
         Map<String, Float> resultMap = reportService.calculateCategoriedTotal();
@@ -185,19 +229,20 @@ public class Chatbot {
         System.out.println("Net Total: " + netTotal);
     }
 
-    // Exit the program and save the data
+// This method stops the JVM
+// Closing our Application
     private void onExit() {
         persistRepository();
         System.exit(0);
     }
 
-    // Save the repository data to text files using FileService
+//This method saves the repository data to text files using FileService
     private void persistRepository() {
         fileService.writeToFile("categories.txt", repo.catList);
         fileService.writeToFile("expenses.txt", repo.expList);
     }
 
-    // Restore data from text files using FileService when the application starts
+// This method restores data from text files using FileService when the application starts
     private void restoreRepository() {
         repo.catList = fileService.readFromFile("categories.txt", Category.class);
         repo.expList = fileService.readFromFile("expenses.txt", Expense.class);

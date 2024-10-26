@@ -4,8 +4,11 @@ package personal_expense_manager._Category;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class StartApp {
+//This class is an entry point of execution for the application
 
+public class StartApp {
+//This method is creating the Expense object and 
+//show application menu and login by calling showMenu( method
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);  // Use a Scanner for user input
 
