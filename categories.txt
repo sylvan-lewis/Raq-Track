@@ -1,3 +1,0 @@
-personal_expense_manager._Category.Category@2dda6444
-personal_expense_manager._Category.Category@37a71e93
-personal_expense_manager._Category.Category@7e6cbb7a

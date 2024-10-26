@@ -3,48 +3,68 @@ package personal_expense_manager._Category;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Expense implements Serializable{
+public class Expense implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long expenseId = System.currentTimeMillis();
-	private String categoryId; 
+	private Long categoryId;
 	private Float amount;
 	private Date date;
 	private String remark;
-	
-	//This is a domain class represents Expense
-	
+
+	// This is a domain class represents Expense
+
 	public Expense() {
-		
+
 	}
-	
-	// 
-	
-	public Expense(String categoryId, Float amount, Date date, String remark) {
+
+	//
+
+	public Expense(Long categoryId, Float amount, Date date, String remark) {
 		this.categoryId = categoryId;
 		this.amount = amount;
 		this.date = date;
 		this.remark = remark;
 	}
 
-	public Long getExpenseId() {return expenseId;}
-	
-	public void setExpenseId(Long expenseId) {this.expenseId= expenseId;}
-	
-	public String getCategoryId() {return categoryId;}
+	public Long getExpenseId() {
+		return expenseId;
+	}
 
-	public void setCategoryId(String categoryId) {this.categoryId = categoryId;}
+	public void setExpenseId(Long expenseId) {
+		this.expenseId = expenseId;
+	}
 
-	public Float getAmount() {return amount;}
+	public Long getCategoryId() {
+		return categoryId;
+	}
 
-	public void setAmount(Float amount) {this.amount = amount;}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
 
-	public Date getDate() {return date;}
+	public Float getAmount() {
+		return amount;
+	}
 
-	public void setDate(Date date) {this.date = date;}
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
 
-	public String getRemark() {return remark;}
+	public Date getDate() {
+		return date;
+	}
 
-	public void setRemark(String remark) {this.remark = remark;}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
 }
