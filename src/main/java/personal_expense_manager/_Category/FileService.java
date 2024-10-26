@@ -14,7 +14,15 @@ public class FileService {
 	public <T> void writeToFile(String fileName, List<T> list) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 			for (T item : list) {
-				writer.write(item.toString() + "\n");
+				if (item instanceof Category) {
+					// Write only the name for Category objects
+					writer.write(((Category) item).getName() + "\n");
+				} else if (item instanceof Expense) {
+					Expense exp = (Expense) item;
+					// Write four fields for Expense objects
+					writer.write(exp.getCategoryId() + "," + exp.getAmount() + "," + exp.getRemark() + ","
+							+ DateUtil.dateToString(exp.getDate()) + "\n");
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -29,16 +37,17 @@ public class FileService {
 				String line = scanner.nextLine();
 				String[] parts = line.split(",");
 
-				// Check if the line has the expected number of parts
 				if (cls == Category.class) {
-					if (parts.length > 1) {
-						Category category = new Category(parts[1].trim());
+					// Expecting only the name for Category
+					if (parts.length == 1) {
+						Category category = new Category(parts[0].trim());
 						list.add(cls.cast(category));
 					} else {
 						System.out.println("Invalid category format in file: " + line);
 					}
 				} else if (cls == Expense.class) {
-					if (parts.length == 4) { // Expecting 4 parts for Expense
+					// Expecting 4 parts for Expense
+					if (parts.length == 4) {
 						Expense exp = new Expense();
 						exp.setCategoryId(Long.decode(parts[0].trim()));
 						exp.setAmount(Float.parseFloat(parts[1].trim()));
@@ -52,7 +61,6 @@ public class FileService {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			// System.out.println("No existing data found for " + fileName);
 		}
 		return list;
 	}
