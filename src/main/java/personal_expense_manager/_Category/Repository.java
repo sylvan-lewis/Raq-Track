@@ -25,6 +25,7 @@ public class Repository {
 		if (repository == null) {
 			repository = new Repository();
 		}
+		System.out.println("Repository instance accessed.");
 		return repository;
 	}
 }

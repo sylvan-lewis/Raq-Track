@@ -14,13 +14,16 @@ public class DateUtil {
 //returns a data object for input date string
 // string formatted date (ex. 10/08/2000) : DD/MM//YYYY
 	public static Date stringToDate(String dateAsString) {
-		try {
-			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			return df.parse(dateAsString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+	    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	    try {
+	        Date date = df.parse(dateAsString);
+	        System.out.println("Parsed date successfully: " + dateAsString + " -> " + date);  // Debug statement
+	        return date;
+	    } catch (ParseException e) {
+	        System.out.println("Failed to parse date: " + dateAsString);  // Debug statement
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 
 	public static String dateToString(Date date) {

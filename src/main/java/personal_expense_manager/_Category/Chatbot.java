@@ -96,7 +96,7 @@ public class Chatbot {
 // This method prints a menu, which will show up in the console each input
 
 	public void printMenu() {
-		System.out.println("----- Welcome to RaqTrack! -----");
+		System.out.println("----- Welcome to YourExpense! -----");
 		System.out.println("1. Add Category");
 		System.out.println("2. Category List");
 		System.out.println("3. Expense Entry");
