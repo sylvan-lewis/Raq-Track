@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 //This is a domain class representing a category
 // It also implements the Serializable interface, making instances serializable
-//
+//Allows objects into a format to be saved to categories.txt
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 

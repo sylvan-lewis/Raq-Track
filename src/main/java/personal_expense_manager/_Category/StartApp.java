@@ -14,7 +14,7 @@ public class StartApp {
 		// First, validate login before showing the menu
 		if (login(scanner)) {
 			// If login is successful, show the chatbot menu
-			Chatbot chat = new Chatbot(); // Ensure Chatbot is correctly imported
+			FinanceBot chat = new FinanceBot(); // Ensure Chatbot is correctly imported
 			chat.showMenu(); // Ensure showMenu() method exists in Chatbot class
 		} else {
 			// If login fails, exit the application

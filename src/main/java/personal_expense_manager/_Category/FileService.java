@@ -1,6 +1,7 @@
 package personal_expense_manager._Category;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,63 +11,73 @@ import java.util.Scanner;
 
 public class FileService {
 
-	// Generic method to write data to a file
-	public <T> void writeToFile(String fileName, List<T> list) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-			for (T item : list) {
-				if (item instanceof Category) {
-					// Write only the name for Category objects
-					writer.write(((Category) item).getName() + "\n");
-				} else if (item instanceof Expense) {
-					Expense exp = (Expense) item;
-					// Write four fields for Expense objects
-					writer.write(exp.getCategoryId() + "," + exp.getAmount() + "," + exp.getRemark() + ","
-							+ DateUtil.dateToString(exp.getDate()) + "\n");
-					 System.out.println("Written Expense: " + exp);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    // Generic method to write data to a file
+    public <T> void writeToFile(String fileName, List<T> list) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (T item : list) {
+                if (item instanceof Category) {
+                    writer.write(((Category) item).getName() + "\n");
+                } else if (item instanceof Expense) {
+                    Expense exp = (Expense) item;
+                    writer.write(exp.getCategoryId() + "," + exp.getAmount() + "," + exp.getRemark() + ","
+                            + DateUtil.dateToString(exp.getDate()) + "\n");
+                } else if (item instanceof Budget) {
+                    Budget budget = (Budget) item;
+                    writer.write(budget.getMonthlyBudget() + "," + budget.getYearlyBudget() + "\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	// Generic method to read data from a file and populate a list
-	public <T> List<T> readFromFile(String fileName, Class<T> cls) {
-		List<T> list = new ArrayList<>();
-		try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
-			System.out.println("Reading from file: " + fileName);
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				System.out.println("Read line: " + line);
-				String[] parts = line.split(",");
+    // Generic method to read data from a file and populate a list
+    public <T> List<T> readFromFile(String fileName, Class<T> cls) {
+        List<T> list = new ArrayList<>();
+        File file = new File(fileName);
 
-				if (cls == Category.class) {
-					// Expecting only the name for Category
-					if (parts.length == 1) {
-						Category category = new Category(parts[0].trim());
-						list.add(cls.cast(category));
-						System.out.println("Parsed Category: " + category.getName());
-					} else {
-						System.out.println("Invalid category format in file: " + line);
-					}
-				} else if (cls == Expense.class) {
-					// Expecting 4 parts for Expense
-					if (parts.length == 4) {
-						Expense exp = new Expense();
-						exp.setCategoryId(Long.decode(parts[0].trim()));
-						exp.setAmount(Float.parseFloat(parts[1].trim()));
-						exp.setRemark(parts[2].trim());
-						exp.setDate(DateUtil.stringToDate(parts[3].trim()));
-						list.add(cls.cast(exp));
-						System.out.println("Parsed Expense: " + exp);
-					} else {
-						System.out.println("Invalid expense format in file: " + line);
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+        if (!file.exists()) {
+            try {
+                file.createNewFile(); // Create the file if it does not exist
+                System.out.println("Created new file: " + fileName);
+            } catch (IOException e) {
+                System.out.println("Failed to create file: " + fileName);
+                e.printStackTrace();
+            }
+            return list;
+        }
+
+        try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+
+                if (cls == Category.class) {
+                    if (parts.length == 1) {
+                        Category category = new Category(parts[0].trim());
+                        list.add(cls.cast(category));
+                    }
+                } else if (cls == Expense.class) {
+                    if (parts.length == 4) {
+                        Expense exp = new Expense();
+                        exp.setCategoryId(Long.decode(parts[0].trim()));
+                        exp.setAmount(Float.parseFloat(parts[1].trim()));
+                        exp.setRemark(parts[2].trim());
+                        exp.setDate(DateUtil.stringToDate(parts[3].trim()));
+                        list.add(cls.cast(exp));
+                    }
+                } else if (cls == Budget.class) {
+                    if (parts.length == 2) {
+                        Budget budget = new Budget();
+                        budget.setMonthlyBudget(Float.parseFloat(parts[0].trim()));
+                        budget.setYearlyBudget(Float.parseFloat(parts[1].trim()));
+                        list.add(cls.cast(budget));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

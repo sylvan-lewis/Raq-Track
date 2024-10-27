@@ -3,6 +3,10 @@ package personal_expense_manager._Category;
 import java.io.Serializable;
 import java.util.Date;
 
+
+//It also implements the Serializable interface, making instances serializable
+// This is a domain class representing a expenses
+// Allows objects into a format to be saved to expenses.txt
 public class Expense implements Serializable {
 	private static final long serialVersionUID = 1L;
 

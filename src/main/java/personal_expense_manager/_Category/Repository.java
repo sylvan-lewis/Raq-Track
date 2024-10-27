@@ -12,20 +12,41 @@ public class Repository {
 //The list holds all expense-categories added by user.
 	public List<Category> catList = new ArrayList<>();
 
+// The list holds all budgets set by the user.
+    public List<Budget> budList = new ArrayList<>();
+    
 //A singleton reference of repository.
-	private static Repository repository;
+	private static Repository repo;
 
 //Private constructor to restrict object creation from outside.
 	private Repository() {
 
 	}
+	
+    // Reference to FileService for file operations.
+    private FileService fileService = new FileService();
+	
 //Provides a singleton object
 
 	public static Repository getRepository() {
-		if (repository == null) {
-			repository = new Repository();
+		if (repo == null) {
+			repo = new Repository();
 		}
 		System.out.println("Repository instance accessed.");
-		return repository;
+		return repo;
 	}
+	
+	// This method restores data from text files using FileService when the application starts
+		private void restoreRepository() {
+			repo.catList = fileService.readFromFile("categories.txt", Category.class);
+			repo.expList = fileService.readFromFile("expenses.txt", Expense.class);
+			repo.budList = fileService.readFromFile("budgets.txt", Budget.class);
+		}
+	
+	//This method saves the repository data to text files using FileService
+		private void persistRepository() {
+			fileService.writeToFile("categories.txt", repo.catList);
+			fileService.writeToFile("expenses.txt", repo.expList);
+			fileService.writeToFile("budgets.txt", repo.expList);
+		}
 }
