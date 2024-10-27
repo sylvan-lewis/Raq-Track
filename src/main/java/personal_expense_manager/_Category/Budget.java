@@ -17,9 +17,13 @@ public class Budget {
             return;
         }
         this.monthlyBudget = amount;        
-        Repository.getRepository().persistData();
+        Repository repo = Repository.getRepository();
+        if (!repo.budList.contains(this)) {
+            repo.budList.add(this);
     }
-
+        repo.persistData();
+ }
+ 
     // Method to set the yearly budget with validation
     public void setYearlyBudget(Float amount) {
         // Check if monthlyBudget is set and ensure yearlyBudget is not set lower than monthlyBudget * 12
@@ -28,9 +32,12 @@ public class Budget {
             return;
         }
         this.yearlyBudget = amount;
-        Repository.getRepository().persistData();
+        Repository repo = Repository.getRepository();
+        if (!repo.budList.contains(this)) {
+            repo.budList.add(this);
+        }
+        repo.persistData();
     }
-
     // Method to print the monthly budget report
     public void printMonthlyBudgetReport() {
         if (monthlyBudget == null || monthlyBudget == 0) {

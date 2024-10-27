@@ -24,7 +24,8 @@ public class FileService {
                         writer.write(exp.getCategoryId() + "," + exp.getAmount() + "," + exp.getRemark() + ","
                                 + DateUtil.dateToString(exp.getDate()) + "\n");
                     } else if (item instanceof Budget) {
-                        writer.write(item.toString() + "\n");
+                    	Budget budget = (Budget) item;
+                        writer.write(budget.getMonthlyBudget() + "," + budget.getYearlyBudget() + "\n");  // Write both budget values
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
