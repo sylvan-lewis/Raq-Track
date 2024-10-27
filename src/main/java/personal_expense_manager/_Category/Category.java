@@ -43,15 +43,13 @@ public class Category implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 // Only displaying the category name when printing categories
 	@Override
 	public String toString() {
 		return name;
 	}
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 
 	}

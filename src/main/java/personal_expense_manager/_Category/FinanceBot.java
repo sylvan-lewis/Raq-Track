@@ -1,7 +1,6 @@
 package personal_expense_manager._Category;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -149,8 +148,12 @@ public class FinanceBot {
 		String catName = s.nextLine();
 		Category cat = new Category(catName);
 		repo.catList.add(cat);
-		System.out.println("Success: Category Added.");
+		System.out.println("Success: Category Added: " + "'" + catName + "'");
 
+		
+	    // Set the last added category name
+	    repo.setLastAddedCategory(catName);
+		
 		// Write the new category to the text file using FileService
 		fileService.writeToFile("categories.txt", repo.catList);
 	}
@@ -178,7 +181,8 @@ public class FinanceBot {
 			return;
 		}
 		Category selectedCat = repo.catList.get(catChoice - 1);
-
+		selectedCat.getCategoryId();
+		
 		System.out.print("Enter Amount: ");
 		float amount = s.nextFloat();
 
@@ -269,14 +273,12 @@ public class FinanceBot {
 	}
 
 	private void onMonthlyBudgetReport() {
-	    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-	    int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1; // +1 because months are 0-based in Calendar
-	    budgetService.printMonthlyBudgetReport(currentYear, currentMonth);
+			budgetService.printMonthlyBudgetReport();
 	}
 
 	private void onYearlyBudgetReport() {
-	    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-	    budgetService.printYearlyBudgetReport(currentYear);
+		
+		budgetService.printYearlyBudgetReport();
 	}
 
 // This method stops the JVM

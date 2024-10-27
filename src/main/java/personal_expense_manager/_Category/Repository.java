@@ -13,8 +13,11 @@ public class Repository {
 	public List<Category> catList = new ArrayList<>();
 
 // The list holds all budgets set by the user.
-    public List<Budget> budList = new ArrayList<>();
-    
+	public List<Budget> budList = new ArrayList<>();
+
+	// Store the last category name added
+	private String lastAddedCategory = null;
+
 //A singleton reference of repository.
 	private static Repository repo;
 
@@ -22,10 +25,10 @@ public class Repository {
 	private Repository() {
 
 	}
-	
-    // Reference to FileService for file operations.
-    private FileService fileService = new FileService();
-	
+
+	// Reference to FileService for file operations.
+	private FileService fileService = new FileService();
+
 //Provides a singleton object
 
 	public static Repository getRepository() {
@@ -35,18 +38,30 @@ public class Repository {
 		System.out.println("Repository instance accessed.");
 		return repo;
 	}
-	
-	// This method restores data from text files using FileService when the application starts
-	public void persistData(FileService fileService) {
-	    fileService.writeToFile("categories.txt", catList);
-	    fileService.writeToFile("expenses.txt", expList);
-	    fileService.writeToFile("budgets.txt", budList);
+
+	// This method restores data from text files using FileService when the
+	// application starts
+	public void persistData() {
+		fileService.writeToFile("categories.txt", catList);
+		fileService.writeToFile("expenses.txt", expList);
+		fileService.writeToFile("budgets.txt", budList);
 	}
-	
-	//This method saves the repository data to text files using FileService
-		public void restoreData(FileService fileService) {
-		    catList = fileService.readFromFile("categories.txt", Category.class);
-		    expList = fileService.readFromFile("expenses.txt", Expense.class);
-		    budList = fileService.readFromFile("budgets.txt", Budget.class);
-		}
+
+	// This method saves the repository data to text files using FileService
+	public void restoreData() {
+		catList = fileService.readFromFile("categories.txt", Category.class);
+		expList = fileService.readFromFile("expenses.txt", Expense.class);
+		budList = fileService.readFromFile("budgets.txt", Budget.class);
+		System.out.println("Data restored: Categories - " + catList.size() + ", Expenses - " + expList.size());
+
+	}
+
+	public void setLastAddedCategory(String categoryName) {
+		this.lastAddedCategory = categoryName;
+	}
+
+	public String getLastAddedCategory() {
+		return this.lastAddedCategory;
+	}
+
 }

@@ -1,5 +1,4 @@
-rent
-shop
-rent
+Rent
 party
-shopping
+Rent
+tires

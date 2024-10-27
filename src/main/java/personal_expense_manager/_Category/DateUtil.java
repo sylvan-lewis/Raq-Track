@@ -4,57 +4,67 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//This class contains static methods to handle dates
+// This class contains static methods to handle dates
 public class DateUtil {
 
-	public static final String[] MONTHS = { "January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December" };
+    // Month names for easy reference
+    public static final String[] MONTHS = { "January", "February", "March", "April", "May", "June", "July", "August",
+            "September", "October", "November", "December" };
 
-//This method converts Date object to String 
-//returns a data object for input date string
-// string formatted date (ex. 10/08/2000) : DD/MM//YYYY
-	public static Date stringToDate(String dateAsString) {
-	    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	    try {
-	        Date date = df.parse(dateAsString);
-	        System.out.println("Parsed date successfully: " + dateAsString + " -> " + date);  // Debug statement
-	        return date;
-	    } catch (ParseException e) {
-	        System.out.println("Failed to parse date: " + dateAsString);  // Debug statement
-	        e.printStackTrace();
-	        return null;
-	    }
-	}
+    // Converts a String date to a Date object, supporting multiple formats.
+    // The method first tries "dd/MM/yyyy". If parsing fails, it attempts "yyyy-MM".
+    // Returns a Date object for the input date string or null if parsing fails.
+    // Format examples: "10/08/2000" for dd/MM/yyyy or "2024-10" for yyyy-MM
+    public static Date stringToDate(String dateAsString) {
+        SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat yearMonthFormat = new SimpleDateFormat("yyyy-MM");
+        
+        try {
+            // Try parsing with the full date format ("dd/MM/yyyy") first
+            Date date = fullDateFormat.parse(dateAsString);
+            System.out.println("Parsed date successfully: " + dateAsString + " -> " + date); // Debug statement
+            return date;
+        } catch (ParseException e) {
+            System.out.println("Failed to parse date with format dd/MM/yyyy: " + dateAsString); // Debug statement
+        }
 
-	public static String dateToString(Date date) {
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		return df.format(date);
+        try {
+            // If the full date format fails, try year-month format ("yyyy-MM")
+            Date date = yearMonthFormat.parse(dateAsString);
+            System.out.println("Parsed year-month successfully: " + dateAsString + " -> " + date); // Debug statement
+            return date;
+        } catch (ParseException ex) {
+            System.out.println("Failed to parse date with both formats: " + dateAsString); // Debug statement
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
-	}
-	// This method returns Year and Month from given Date in Year,Month Format
-	// string formatted date (ex. 2000/08 and or 2024/10) : YYYY,MM
-	// Year and month will be extracted for this date for input
+    // Converts a Date object to a String in "dd/MM/yyyy" format.
+    public static String dateToString(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        return df.format(date);
+    }
 
-	public static String getYearAndMonth(Date date) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
-		return df.format(date);
-	}
+    // Returns Year and Month from a given Date in "yyyy-MM" format.
+    // Format example: "2024-10"
+    public static String getYearAndMonth(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+        return df.format(date);
+    }
 
-	// Returns year for input date
-	public static Integer getYear(Date date) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy");
-		// String yearString = df.format(date);
-		return Integer.parseInt(df.format(date));
-	}
+    // Returns the year as an Integer for the given Date.
+    public static Integer getYear(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        return Integer.parseInt(df.format(date));
+    }
 
-	// This returns month name for given month number
-	// (ex. 01: January, 03: March, 07: July)
-	public static String getMonthName(Integer monthNo) {
-		if (monthNo < 1 || monthNo > 12) {
-			throw new IllegalArgumentException("Month must be between 1-12");
-		}
-		return MONTHS[monthNo - 1];
-
-		// validate that its within the range of normal calendar months 1-12
-	}
+    // Returns the month name for the given month number (1-based).
+    // Examples: 1 -> "January", 3 -> "March"
+    public static String getMonthName(Integer monthNo) {
+        if (monthNo < 1 || monthNo > 12) {
+            throw new IllegalArgumentException("Month must be between 1-12");
+        }
+        return MONTHS[monthNo - 1];
+    }
 }

@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-//This class contains various methods to calculate the application reports.
+// This class contains various methods to calculate the application reports.
 public class ReportService {
 
-//Declare a reference of singleton repository.
+	// Declare a reference of singleton repository.
 	private Repository repo = Repository.getRepository();
 
-//The method calculates month-wise total and returns results in Map.	
-//Preparing data in proper order.
+	// The method calculates month-wise total and returns results in Map.
+	// Preparing data in proper order.
 	public Map<String, Float> calculateMonthlyTotal() {
 		Map<String, Float> m = new TreeMap<>();
 		for (Expense exp : repo.expList) {
@@ -23,14 +23,13 @@ public class ReportService {
 				m.put(yearMonth, total);
 			} else {
 				m.put(yearMonth, exp.getAmount());
-
 			}
 		}
 		return m;
 	}
 
-//The method calculates month-wise total and returns results in Map.	
-//Preparing data in proper order.		
+	// The method calculates year-wise total and returns results in Map.
+	// Preparing data in proper order.
 	public Map<Integer, Float> calculateYearlyTotal() {
 		Map<Integer, Float> m = new TreeMap<>();
 		for (Expense exp : repo.expList) {
@@ -45,50 +44,40 @@ public class ReportService {
 			}
 		}
 		return m;
-
 	}
 
-//The method calculates category-wise total and returns results in Map.	
-//Preparing data in proper order.
+	// The method calculates category-wise total and returns results in Map.
+	// Preparing data in proper order.
 	public Map<String, Float> calculateCategoriedTotal() {
 		Map<String, Float> m = new TreeMap<>();
 
 		for (Expense exp : repo.expList) {
 			Long categoryId = exp.getCategoryId();
-			String catName = this.getCategoryName(categoryId);
+			String catName = this.getCategoryName(categoryId); // Retrieve category name by ID
 
 			if (m.containsKey(catName)) {
 				Float total = m.get(catName);
 				total = total + exp.getAmount();
 				m.put(catName, total);
 			} else {
-
 				m.put(catName, exp.getAmount());
 			}
 		}
 		return m;
 	}
 
-	// The method returns category name for a given categoryId
+	// The method returns the category name for a given categoryId
 	// Returns "Unknown Category" if no matching category is found
 	public String getCategoryName(Long categoryId) {
-	    if (categoryId == null) {
-	        System.out.println("Warning: Null category ID provided.");
-	        return "Unknown Category";
-	    }
-
 	    for (Category c : repo.catList) {
-	        if (c.getCategoryId() != null && c.getCategoryId().equals(categoryId)) {
-	            return c.getName();
+	        if (c.getCategoryId().equals(categoryId)) {
+	            return c.getName(); // Return the exact category name matching this ID
 	        }
 	    }
-
-	    System.out.println("Warning: No category found for ID: " + categoryId);
-	    return "Unknown Category"; // Default value if category ID doesn't match
+	    return "Uncategorized"; // Return a default if no match found
 	}
 
 	public static void main(String[] args) {
-
+		// This main method is available for standalone testing
 	}
-
 }
