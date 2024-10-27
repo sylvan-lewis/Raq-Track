@@ -1,0 +1,5 @@
+rent
+shop
+rent
+party
+shopping

@@ -37,16 +37,16 @@ public class Repository {
 	}
 	
 	// This method restores data from text files using FileService when the application starts
-		private void restoreRepository() {
-			repo.catList = fileService.readFromFile("categories.txt", Category.class);
-			repo.expList = fileService.readFromFile("expenses.txt", Expense.class);
-			repo.budList = fileService.readFromFile("budgets.txt", Budget.class);
-		}
+	public void persistData(FileService fileService) {
+	    fileService.writeToFile("categories.txt", catList);
+	    fileService.writeToFile("expenses.txt", expList);
+	    fileService.writeToFile("budgets.txt", budList);
+	}
 	
 	//This method saves the repository data to text files using FileService
-		private void persistRepository() {
-			fileService.writeToFile("categories.txt", repo.catList);
-			fileService.writeToFile("expenses.txt", repo.expList);
-			fileService.writeToFile("budgets.txt", repo.expList);
+		public void restoreData(FileService fileService) {
+		    catList = fileService.readFromFile("categories.txt", Category.class);
+		    expList = fileService.readFromFile("expenses.txt", Expense.class);
+		    budList = fileService.readFromFile("budgets.txt", Budget.class);
 		}
 }

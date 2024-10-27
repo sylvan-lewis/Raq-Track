@@ -69,15 +69,22 @@ public class ReportService {
 		return m;
 	}
 
-//The method returns category name for given categoryId
-// Will return null when wrong category Id is supplied
+	// The method returns category name for a given categoryId
+	// Returns "Unknown Category" if no matching category is found
 	public String getCategoryName(Long categoryId) {
-		for (Category c : repo.catList) {
-			if (c.getCategoryId() != null && c.getCategoryId().equals(categoryId)) {
-				return c.getName();
-			}
-		}
-		return null;
+	    if (categoryId == null) {
+	        System.out.println("Warning: Null category ID provided.");
+	        return "Unknown Category";
+	    }
+
+	    for (Category c : repo.catList) {
+	        if (c.getCategoryId() != null && c.getCategoryId().equals(categoryId)) {
+	            return c.getName();
+	        }
+	    }
+
+	    System.out.println("Warning: No category found for ID: " + categoryId);
+	    return "Unknown Category"; // Default value if category ID doesn't match
 	}
 
 	public static void main(String[] args) {

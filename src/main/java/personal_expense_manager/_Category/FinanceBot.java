@@ -1,6 +1,7 @@
 package personal_expense_manager._Category;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -16,7 +17,6 @@ public class FinanceBot {
 //Declare a reference of repository by calling a static method which returns a singleton repository object.
 
 	private Repository repo = Repository.getRepository();
-	
 
 //Declare a reference of reportService by calling a different method to calculate reports
 
@@ -30,7 +30,7 @@ public class FinanceBot {
 	// Declare a Scanner object to take input standard input from keyboard.
 
 	private Scanner s = new Scanner(System.in);
-	
+
 	// Declres a reference to budgetService by calling the methods
 	private Budget budgetService = new Budget();
 
@@ -47,90 +47,87 @@ public class FinanceBot {
 //This method prepares the application menu using a switch-case and infinite loop, inquiring for user choice
 
 	public void showMenu() {
-	    while (true) {
-	        try {
-	            printMenu();
-	            switch (choice) {
-	                case 1:
-	                    onAddCategory();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 2:
-	                    onCategoryList();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 3:
-	                    onExpenseEntry();
-	                    pressAnyKeyToContinue();
+		while (true) {
+			try {
+				printMenu();
+				switch (choice) {
+				case 1:
+					onAddCategory();
+					pressAnyKeyToContinue();
+					break;
+				case 2:
+					onCategoryList();
+					pressAnyKeyToContinue();
+					break;
+				case 3:
+					onExpenseEntry();
+					pressAnyKeyToContinue();
 
-	                    break;
-	                case 4:
-	                    onExpenseList();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 5:
-	                    onMonthlyExpenseList();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 6:
-	                    onYearlyExpenseList();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 7:
-	                    onCategorizedExpenseList();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 8:
-	                    onSetMonthlyBudget();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 9:
-	                    onSetYearlyBudget();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 10:
-	                    onMonthlyBudgetReport();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 11:
-	                    onYearlyBudgetReport();
-	                    pressAnyKeyToContinue();
-	                    break;
-	                case 0:
-	                    onExit();
-	                    return;
-	                default:
-	                    System.out.println("Invalid option. Please enter a valid option (0-11).");
-	            }
-	        } catch (InputMismatchException e) {
-	            System.out.println("Invalid input. Please try again.");
-	            s.next(); // Clear the invalid input
-	        }
-	    }
+					break;
+				case 4:
+					onExpenseList();
+					pressAnyKeyToContinue();
+					break;
+				case 5:
+					onMonthlyExpenseList();
+					pressAnyKeyToContinue();
+					break;
+				case 6:
+					onYearlyExpenseList();
+					pressAnyKeyToContinue();
+					break;
+				case 7:
+					onCategorizedExpenseList();
+					pressAnyKeyToContinue();
+					break;
+				case 8:
+					onSetMonthlyBudget();
+					pressAnyKeyToContinue();
+					break;
+				case 9:
+					onSetYearlyBudget();
+					pressAnyKeyToContinue();
+					break;
+				case 10:
+					onMonthlyBudgetReport();
+					pressAnyKeyToContinue();
+					break;
+				case 11:
+					onYearlyBudgetReport();
+					pressAnyKeyToContinue();
+					break;
+				case 0:
+					onExit();
+					return;
+				default:
+					System.out.println("Invalid option. Please enter a valid option (0-11).");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input. Please try again.");
+				s.next(); // Clear the invalid input
+			}
+		}
 	}
 
 	public void printMenu() {
-	    System.out.println("----- Welcome to RaqTrack! -----");
-	    System.out.println("1. Add Category");
-	    System.out.println("2. Category List");
-	    System.out.println("3. Expense Entry");
-	    System.out.println("4. Expense List");
-	    System.out.println("5. Monthly Expense List");
-	    System.out.println("6. Yearly Expense List");
-	    System.out.println("7. Categorized Expense List");
-	    System.out.println("8. Set Monthly Budget");
-	    System.out.println("9. Set Yearly Budget");
-	    System.out.println("10. Monthly Budget Report");
-	    System.out.println("11. Yearly Budget Report");
-	    System.out.println("0. Exit");
-	    System.out.println("----------------------------------");
-	    System.out.print("Enter your choice: ");
-	    choice = s.nextInt();
+		System.out.println("----- Welcome to RaqTrack! -----");
+		System.out.println("1. Add Category");
+		System.out.println("2. Category List");
+		System.out.println("3. Expense Entry");
+		System.out.println("4. Expense List");
+		System.out.println("5. Monthly Expense List");
+		System.out.println("6. Yearly Expense List");
+		System.out.println("7. Categorized Expense List");
+		System.out.println("8. Set Monthly Budget");
+		System.out.println("9. Set Yearly Budget");
+		System.out.println("10. Monthly Budget Report");
+		System.out.println("11. Yearly Budget Report");
+		System.out.println("0. Exit");
+		System.out.println("----------------------------------");
+		System.out.print("Enter your choice: ");
+		choice = s.nextInt();
 	}
 
-	
-	
-	
 // This method is called to hold a output screen after processing the requested task.
 // and wait for any char input to continue to the menu
 
@@ -164,7 +161,7 @@ public class FinanceBot {
 		System.out.println("Category List");
 		for (int i = 0; i < repo.catList.size(); i++) {
 			Category c = repo.catList.get(i);
-	        System.out.println((i + 1) + ". " + c.getName());  // Only print the name
+			System.out.println((i + 1) + ". " + c.getName()); // Only print the name
 		}
 	}
 
@@ -201,29 +198,6 @@ public class FinanceBot {
 		fileService.writeToFile("expenses.txt", repo.expList);
 	}
 
-
-	private void onSetMonthlyBudget() {
-        System.out.print("Enter Monthly Budget: ");
-        float monthlyBudget = s.nextFloat();
-        budgetService.setMonthlyBudget(monthlyBudget);
-        System.out.println("Monthly budget set to " + monthlyBudget);
-    }
-
-    private void onSetYearlyBudget() {
-        System.out.print("Enter Yearly Budget: ");
-        float yearlyBudget = s.nextFloat();
-        budgetService.setYearlyBudget(yearlyBudget);
-        System.out.println("Yearly budget set to " + yearlyBudget);
-    }
-
-    private void onMonthlyBudgetReport() {
-        budgetService.printMonthlyBudgetReport();
-    }
-
-    private void onYearlyBudgetReport() {
-        budgetService.printYearlyBudgetReport();
-    }
-		
 	// Call this method prints all entered expenses.
 
 	private void onExpenseList() {
@@ -280,6 +254,31 @@ public class FinanceBot {
 		System.out.println("Net Total: " + netTotal);
 	}
 
+	private void onSetMonthlyBudget() {
+		System.out.print("Enter Monthly Budget: ");
+		float monthlyBudget = s.nextFloat();
+		budgetService.setMonthlyBudget(monthlyBudget);
+		System.out.println("Monthly budget set to " + monthlyBudget);
+	}
+
+	private void onSetYearlyBudget() {
+		System.out.print("Enter Yearly Budget: ");
+		float yearlyBudget = s.nextFloat();
+		budgetService.setYearlyBudget(yearlyBudget);
+		System.out.println("Yearly budget set to " + yearlyBudget);
+	}
+
+	private void onMonthlyBudgetReport() {
+	    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	    int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1; // +1 because months are 0-based in Calendar
+	    budgetService.printMonthlyBudgetReport(currentYear, currentMonth);
+	}
+
+	private void onYearlyBudgetReport() {
+	    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	    budgetService.printYearlyBudgetReport(currentYear);
+	}
+
 // This method stops the JVM
 // Closing our Application
 	private void onExit() {
@@ -291,7 +290,7 @@ public class FinanceBot {
 	private void persistRepository() {
 		fileService.writeToFile("categories.txt", repo.catList);
 		fileService.writeToFile("expenses.txt", repo.expList);
-		fileService.writeToFile("budgets.txt", repo.expList);
+		fileService.writeToFile("budgets.txt", repo.budList);
 
 	}
 

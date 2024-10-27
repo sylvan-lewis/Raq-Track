@@ -2,6 +2,7 @@ package personal_expense_manager._Category;
 
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 public class Budget {
@@ -14,26 +15,34 @@ public class Budget {
     // Method to set the monthly budget
     public void setMonthlyBudget(Float amount) {
         this.monthlyBudget = amount;
-        System.out.println("Monthly budget set to " + amount);
     }
 
     // Method to set the yearly budget
     public void setYearlyBudget(Float amount) {
         this.yearlyBudget = amount;
-        System.out.println("Yearly budget set to " + amount);
     }
 
-    // Method to print the monthly budget report
-    public void printMonthlyBudgetReport() {
+    public void printMonthlyBudgetReport(int month, int year) {
         if (monthlyBudget == null || monthlyBudget == 0) {
             System.out.println("Monthly budget is not set.");
             return;
         }
-        float totalMonthlyExpense = reportService.calculateMonthlyTotal().values().stream().reduce(0f, Float::sum);
+
+        // Calculate total expenses for the specified month and year
+        float totalMonthlyExpense = reportService.calculateMonthlyTotal().entrySet().stream()
+                .filter(entry -> {
+                    Date date = DateUtil.stringToDate(entry.getKey());
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    return cal.get(Calendar.MONTH) == month && cal.get(Calendar.YEAR) == year;
+                })
+                .map(Map.Entry::getValue)
+                .reduce(0f, Float::sum);
+
         float remainingMonthlyBudget = monthlyBudget - totalMonthlyExpense;
 
-        System.out.println("Monthly Budget: " + monthlyBudget);
-        System.out.println("Total Monthly Expense: " + totalMonthlyExpense);
+        System.out.println("Monthly Budget for " + DateUtil.getMonthName(month + 1) + ": " + monthlyBudget);
+        System.out.println("Total Expense for " + DateUtil.getMonthName(month + 1) + ": " + totalMonthlyExpense);
         System.out.println("Remaining Monthly Budget: " + remainingMonthlyBudget);
 
         if (remainingMonthlyBudget < 0) {
@@ -41,39 +50,36 @@ public class Budget {
         }
     }
 
-    // Method to print the yearly budget report
-    public void printYearlyBudgetReport() {
+
+    // Method to print the yearly budget report for a specified year
+    public void printYearlyBudgetReport(int year) {
         if (yearlyBudget == null || yearlyBudget == 0) {
             System.out.println("Yearly budget is not set.");
             return;
         }
 
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-        // Only include expenses from the current year
+        // Filter and calculate total expenses for the specified year only
         float totalYearlyExpense = reportService.calculateYearlyTotal().entrySet().stream()
-                .filter(entry -> entry.getKey() == currentYear) // Filter expenses by the current year
+                .filter(entry -> entry.getKey() == year)  // Filter expenses by the specified year
                 .map(Map.Entry::getValue)
                 .reduce(0f, Float::sum);
 
         float remainingYearlyBudget = yearlyBudget - totalYearlyExpense;
 
-        System.out.println("Yearly Budget: " + yearlyBudget);
-        System.out.println("Total Yearly Expense: " + totalYearlyExpense);
+        System.out.println("Yearly Budget for " + year + ": " + yearlyBudget);
+        System.out.println("Total Expense for " + year + ": " + totalYearlyExpense);
         System.out.println("Remaining Yearly Budget: " + remainingYearlyBudget);
 
         if (remainingYearlyBudget < 0) {
-            System.out.println("Warning: You have exceeded your yearly budget by " + Math.abs(remainingYearlyBudget));
+            System.out.println("Uh-Oh! You have exceeded your yearly budget by " + Math.abs(remainingYearlyBudget));
         }
     }
 
 	public String getMonthlyBudget() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getYearlyBudget() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
