@@ -27,7 +27,7 @@ public class Repository {
 	}
 
 	// Reference to FileService for file operations.
-	private FileService fileService = new FileService();
+	public FileService fileService = new FileService();
 
 //Provides a singleton object
 

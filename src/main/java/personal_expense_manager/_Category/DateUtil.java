@@ -42,6 +42,9 @@ public class DateUtil {
 
     // Converts a Date object to a String in "dd/MM/yyyy" format.
     public static String dateToString(Date date) {
+        if (date == null) {
+            return ""; // Or use "N/A" or some other placeholder if preferred
+        }
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return df.format(date);
     }
